@@ -1,0 +1,11 @@
+.git
+.github
+.env
+.venv
+__pycache__/
+*.pyc
+.ruff_cache/
+INSTRUCTIONS.md
+contenido_visible.md
+quality_check.py
+requirements-quality.txt
