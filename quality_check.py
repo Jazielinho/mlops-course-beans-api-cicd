@@ -39,6 +39,7 @@ def make_collate_fn(pipe, label_names):
             proba.append([scores.get(lbl, 0.0) for lbl in label_names])
         images_np = [np.array(img) for img in images_pil]
         return BatchOutputFormat(images=images_np, labels=labels, predictions=proba)
+
     return collate_fn
 
 
@@ -50,7 +51,9 @@ def build_vision_data(hf_split, pipe, label_names):
         batch_size=8,
         collate_fn=make_collate_fn(pipe, label_names),
     )
-    return VisionData(batch_loader=loader, task_type="classification", label_map=label_map)
+    return VisionData(
+        batch_loader=loader, task_type="classification", label_map=label_map
+    )
 
 
 def main():
@@ -76,7 +79,9 @@ def main():
         if check_result.check.name() == "Label Drift":
             drift_score = check_result.value["Samples Per Class"]["Drift score"]
             if drift_score > 0.5:
-                print(f"  [FAIL] Label Drift: score {drift_score:.3f} exceeds threshold 0.5")
+                print(
+                    f"  [FAIL] Label Drift: score {drift_score:.3f} exceeds threshold 0.5"
+                )
                 sys.exit(1)
             else:
                 print(f"  [PASS] Label Drift: score {drift_score:.3f} ≤ 0.5")

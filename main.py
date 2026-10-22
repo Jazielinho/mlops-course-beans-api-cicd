@@ -1,4 +1,5 @@
 import io
+from typing import Annotated
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from PIL import Image
@@ -16,7 +17,7 @@ def health():
 
 
 @app.post("/predict")
-async def predict(file: UploadFile = File(...)):
+async def predict(file: Annotated[UploadFile, File(...)]):
     if not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="File must be an image")
 
